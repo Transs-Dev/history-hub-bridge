@@ -1,6 +1,7 @@
 
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 const Hero = () => {
   return (
@@ -16,20 +17,24 @@ const Hero = () => {
             Embark on a journey through time with our comprehensive video lessons in both English and Swahili. Learn about the profound history that shaped the world we know today.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Button 
-              size="lg" 
-              className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-lg"
-            >
-              Start Learning
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg"
-              className="border-accent text-accent hover:bg-accent hover:text-white font-semibold px-8 py-6 text-lg"
-            >
-              About Our Mission
-            </Button>
+            <Link to="/learn">
+              <Button 
+                size="lg" 
+                className="bg-primary hover:bg-primary-dark text-white font-semibold px-8 py-6 text-lg"
+              >
+                Start Learning
+                <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link to="/about">
+              <Button 
+                variant="outline" 
+                size="lg"
+                className="border-accent text-accent hover:bg-accent hover:text-white font-semibold px-8 py-6 text-lg"
+              >
+                About Our Mission
+              </Button>
+            </Link>
           </div>
         </div>
       </div>
