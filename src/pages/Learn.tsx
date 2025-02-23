@@ -1,6 +1,5 @@
-
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Play } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Play, MessageCircle } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -13,6 +12,8 @@ const topics = [
     title: "Birth of Muhammad",
     duration: "15:20",
     description: "Explore the historical context and significance of Prophet Muhammad's birth.",
+    videoEnglish: "PDxKxnVZtgo",
+    videoSwahili: "lOIQPHSaqW0"
   },
   {
     id: 2,
@@ -73,6 +74,11 @@ const topics = [
 const Learn = () => {
   const [selectedTopic, setSelectedTopic] = useState(topics[0])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [showChat, setShowChat] = useState(false)
+
+  const handleWhatsAppClick = () => {
+    window.open(`https://wa.me/254745087870?text=${encodeURIComponent('Assalam Alaikum, I have a question about Islamic History Hub.')}`, '_blank');
+  }
 
   return (
     <div className="min-h-screen bg-neutral-50">
@@ -144,13 +150,25 @@ const Learn = () => {
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* English Video */}
-              <Card className="aspect-video bg-neutral-100 flex items-center justify-center">
-                <p className="text-neutral-600">English Version</p>
+              <Card className="aspect-video bg-neutral-900 overflow-hidden">
+                <iframe
+                  className="w-full h-full"
+                  src={`https://www.youtube.com/embed/${selectedTopic.videoEnglish}`}
+                  title="English Version"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
               </Card>
 
               {/* Swahili Video */}
-              <Card className="aspect-video bg-neutral-100 flex items-center justify-center">
-                <p className="text-neutral-600">Swahili Version</p>
+              <Card className="aspect-video bg-neutral-900 overflow-hidden">
+                <iframe
+                  className="w-full h-full"
+                  src={`https://www.youtube.com/embed/${selectedTopic.videoSwahili}`}
+                  title="Swahili Version"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
               </Card>
             </div>
 
@@ -178,6 +196,31 @@ const Learn = () => {
             </div>
           </div>
         </div>
+      </div>
+
+      {/* WhatsApp Chat Button */}
+      <div 
+        className={`fixed bottom-6 right-6 transition-all duration-300 transform ${
+          showChat ? 'translate-y-0 opacity-100' : 'translate-y-2 opacity-90'
+        }`}
+        onMouseEnter={() => setShowChat(true)}
+        onMouseLeave={() => setShowChat(false)}
+      >
+        <div className={`absolute bottom-full right-0 mb-2 transform transition-all duration-300 ${
+          showChat ? 'scale-100 opacity-100' : 'scale-95 opacity-0'
+        }`}>
+          <Card className="p-3 bg-white shadow-lg">
+            <p className="text-accent font-arabic text-sm whitespace-nowrap">
+              Assalam Alaikum! Need help? 👋
+            </p>
+          </Card>
+        </div>
+        <Button
+          onClick={handleWhatsAppClick}
+          className="h-14 w-14 rounded-full bg-green-500 hover:bg-green-600 text-white shadow-lg hover:shadow-xl transition-all duration-300 animate-bounce"
+        >
+          <MessageCircle className="h-6 w-6" />
+        </Button>
       </div>
     </div>
   )

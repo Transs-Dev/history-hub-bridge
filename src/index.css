@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -48,6 +49,10 @@
     --input: 0 0% 14.9%;
     --ring: 0 0% 83.1%;
   }
+
+  .font-arabic {
+    font-family: 'Noto Naskh Arabic', serif;
+  }
 }
 
 @layer base {
@@ -78,4 +83,30 @@
 
 .animate-float {
   animation: float 3s ease-in-out infinite;
+}
+
+/* Chat Animation */
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(-5%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: translateY(0);
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
+}
+
+.animate-bounce {
+  animation: bounce 2s infinite;
+}
+
+/* Custom Hover Effect for Chat */
+.chat-hover {
+  transition: all 0.3s ease;
+}
+
+.chat-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
 }
