@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Play, MessageCircle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Play, MessageCircle, BookOpen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
@@ -9,17 +9,32 @@ import Navbar from '@/components/Navbar'
 const topics = [
   {
     id: 1,
+    title: "Introduction to Islamic History",
+    duration: "12:30",
+    description: "An overview of the importance and significance of learning Islamic history.",
+    videoEnglish: "PDxKxnVZtgo", // You'll need to update this with the correct English video ID
+    videoSwahili: "UMZYIKHnce4",
+    transcriptEnglish: `Islamic history is a rich tapestry that spans over fourteen centuries. This introduction 
+    will help you understand the significance of studying our history and how it shapes our present. We'll explore 
+    the methodology of learning, the importance of authentic sources, and how to approach historical events with 
+    proper context.`,
+    transcriptSwahili: `Historia ya Kiislamu ni utajiri mkubwa unaoenea kwa zaidi ya karne kumi na nne. Utangulizi 
+    huu utakusaidia kuelewa umuhimu wa kusoma historia yetu na jinsi inavyounda wakati wetu wa sasa. Tutachunguza 
+    mbinu za kujifunza, umuhimu wa vyanzo sahihi, na jinsi ya kukabiliana na matukio ya kihistoria kwa muktadha sahihi.`
+  },
+  {
+    id: 2,
     title: "Birth of Muhammad",
     duration: "15:20",
     description: "Explore the historical context and significance of Prophet Muhammad's birth.",
     videoEnglish: "PDxKxnVZtgo",
-    videoSwahili: "lOIQPHSaqW0"
-  },
-  {
-    id: 2,
-    title: "Childhood and Early Life",
-    duration: "18:45",
-    description: "Learn about the early years and upbringing of Prophet Muhammad.",
+    videoSwahili: "lOIQPHSaqW0",
+    transcriptEnglish: `The birth of Prophet Muhammad (peace be upon him) in the Year of the Elephant marked 
+    a pivotal moment in human history. Born in Mecca to Abdullah and Amina, his birth was accompanied by various 
+    miraculous events that foretold his future significance.`,
+    transcriptSwahili: `Kuzaliwa kwa Mtume Muhammad (SAW) katika Mwaka wa Ndovu kulikuwa ni wakati muhimu katika 
+    historia ya binadamu. Alizaliwa Makka kwa Abdullah na Amina, kuzaliwa kwake kuliambatana na matukio mbalimbali 
+    ya miujiza ambayo ilitabiri umuhimu wake wa baadaye.`
   },
   {
     id: 3,
@@ -75,9 +90,15 @@ const Learn = () => {
   const [selectedTopic, setSelectedTopic] = useState(topics[0])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [showChat, setShowChat] = useState(false)
+  const [showTranscripts, setShowTranscripts] = useState(false)
 
   const handleWhatsAppClick = () => {
     window.open(`https://wa.me/254745087870?text=${encodeURIComponent('Assalam Alaikum, I have a question about Islamic History Hub.')}`, '_blank');
+  }
+
+  const scrollToTranscripts = () => {
+    setShowTranscripts(true)
+    document.getElementById('transcripts')?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
@@ -172,25 +193,73 @@ const Learn = () => {
               </Card>
             </div>
 
+            <div className="mt-8 flex justify-center gap-4">
+              <Button
+                onClick={scrollToTranscripts}
+                className="bg-accent hover:bg-accent/90 text-white"
+              >
+                <BookOpen className="mr-2 h-4 w-4" />
+                View Full Story
+              </Button>
+            </div>
+
             <Separator className="my-8" />
 
             {/* Transcripts */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            <div id="transcripts" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="p-6">
-                <h3 className="font-medium mb-4">English Transcript</h3>
-                <ScrollArea className="h-[200px]">
-                  <p className="text-sm text-neutral-600">
-                    [English transcript will appear here]
-                  </p>
+                <h3 className="font-medium mb-4 flex items-center gap-2">
+                  <BookOpen className="h-4 w-4 text-primary" />
+                  English Story
+                </h3>
+                <ScrollArea className="h-[400px] pr-4">
+                  <div className="space-y-4">
+                    <div className="rounded-lg bg-neutral-50 p-4">
+                      <p className="text-sm text-neutral-700 leading-relaxed">
+                        {selectedTopic.transcriptEnglish}
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <img 
+                        src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7" 
+                        alt="Historical illustration" 
+                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                      />
+                      <img 
+                        src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e" 
+                        alt="Historical illustration" 
+                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                      />
+                    </div>
+                  </div>
                 </ScrollArea>
               </Card>
 
               <Card className="p-6">
-                <h3 className="font-medium mb-4">Swahili Transcript</h3>
-                <ScrollArea className="h-[200px]">
-                  <p className="text-sm text-neutral-600">
-                    [Swahili transcript will appear here]
-                  </p>
+                <h3 className="font-medium mb-4 flex items-center gap-2">
+                  <BookOpen className="h-4 w-4 text-primary" />
+                  Hadithi ya Kiswahili
+                </h3>
+                <ScrollArea className="h-[400px] pr-4">
+                  <div className="space-y-4">
+                    <div className="rounded-lg bg-neutral-50 p-4">
+                      <p className="text-sm text-neutral-700 leading-relaxed">
+                        {selectedTopic.transcriptSwahili}
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-2 gap-4">
+                      <img 
+                        src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
+                        alt="Historical illustration" 
+                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                      />
+                      <img 
+                        src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5" 
+                        alt="Historical illustration" 
+                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
+                      />
+                    </div>
+                  </div>
                 </ScrollArea>
               </Card>
             </div>
