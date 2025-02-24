@@ -4,13 +4,15 @@ import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
 import { ScrollArea } from '@/components/ui/scroll-area'
+import { Link } from 'react-router-dom'
 import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 
 const topics = [
   {
     id: 1,
     title: "Introduction to Islamic History",
-    duration: "12:30",
+    duration: "2:00",
     description: "An overview of the importance and significance of learning Islamic history.",
     videoEnglish: "PDxKxnVZtgo", // You'll need to update this with the correct English video ID
     videoSwahili: "UMZYIKHnce4",
@@ -90,22 +92,16 @@ const Learn = () => {
   const [selectedTopic, setSelectedTopic] = useState(topics[0])
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const [showChat, setShowChat] = useState(false)
-  const [showTranscripts, setShowTranscripts] = useState(false)
 
   const handleWhatsAppClick = () => {
     window.open(`https://wa.me/254745087870?text=${encodeURIComponent('Assalam Alaikum, I have a question about Islamic History Hub.')}`, '_blank');
   }
 
-  const scrollToTranscripts = () => {
-    setShowTranscripts(true)
-    document.getElementById('transcripts')?.scrollIntoView({ behavior: 'smooth' })
-  }
-
   return (
-    <div className="min-h-screen bg-neutral-50">
+    <div className="min-h-screen bg-neutral-50 flex flex-col">
       <Navbar />
       
-      <div className="flex pt-16">
+      <div className="flex pt-16 flex-1">
         {/* Sidebar */}
         <div 
           className={`relative h-[calc(100vh-4rem)] bg-white border-r border-neutral-200 transition-all duration-300 ${
@@ -194,73 +190,42 @@ const Learn = () => {
             </div>
 
             <div className="mt-8 flex justify-center gap-4">
-              <Button
-                onClick={scrollToTranscripts}
-                className="bg-accent hover:bg-accent/90 text-white"
-              >
-                <BookOpen className="mr-2 h-4 w-4" />
-                View Full Story
-              </Button>
+              <Link to={`/story/${selectedTopic.id}`}>
+                <Button
+                  className="bg-accent hover:bg-accent/90 text-white"
+                >
+                  <BookOpen className="mr-2 h-4 w-4" />
+                  View Full Story
+                </Button>
+              </Link>
             </div>
 
             <Separator className="my-8" />
 
-            {/* Transcripts */}
-            <div id="transcripts" className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Transcripts Preview */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <Card className="p-6">
                 <h3 className="font-medium mb-4 flex items-center gap-2">
                   <BookOpen className="h-4 w-4 text-primary" />
-                  English Story
+                  English Story Preview
                 </h3>
-                <ScrollArea className="h-[400px] pr-4">
-                  <div className="space-y-4">
-                    <div className="rounded-lg bg-neutral-50 p-4">
-                      <p className="text-sm text-neutral-700 leading-relaxed">
-                        {selectedTopic.transcriptEnglish}
-                      </p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <img 
-                        src="https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7" 
-                        alt="Historical illustration" 
-                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
-                      />
-                      <img 
-                        src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e" 
-                        alt="Historical illustration" 
-                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
-                      />
-                    </div>
-                  </div>
-                </ScrollArea>
+                <div className="rounded-lg bg-neutral-50 p-4">
+                  <p className="text-sm text-neutral-700 leading-relaxed line-clamp-3">
+                    {selectedTopic.transcriptEnglish}
+                  </p>
+                </div>
               </Card>
 
               <Card className="p-6">
                 <h3 className="font-medium mb-4 flex items-center gap-2">
                   <BookOpen className="h-4 w-4 text-primary" />
-                  Hadithi ya Kiswahili
+                  Hadithi ya Kiswahili (Muhtasari)
                 </h3>
-                <ScrollArea className="h-[400px] pr-4">
-                  <div className="space-y-4">
-                    <div className="rounded-lg bg-neutral-50 p-4">
-                      <p className="text-sm text-neutral-700 leading-relaxed">
-                        {selectedTopic.transcriptSwahili}
-                      </p>
-                    </div>
-                    <div className="grid grid-cols-2 gap-4">
-                      <img 
-                        src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158" 
-                        alt="Historical illustration" 
-                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
-                      />
-                      <img 
-                        src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5" 
-                        alt="Historical illustration" 
-                        className="rounded-lg shadow-md hover:shadow-lg transition-shadow"
-                      />
-                    </div>
-                  </div>
-                </ScrollArea>
+                <div className="rounded-lg bg-neutral-50 p-4">
+                  <p className="text-sm text-neutral-700 leading-relaxed line-clamp-3">
+                    {selectedTopic.transcriptSwahili}
+                  </p>
+                </div>
               </Card>
             </div>
           </div>
@@ -291,8 +256,10 @@ const Learn = () => {
           <MessageCircle className="h-6 w-6" />
         </Button>
       </div>
-    </div>
-  )
-}
 
-export default Learn
+      <Footer />
+    </div>
+  );
+};
+
+export default Learn;
