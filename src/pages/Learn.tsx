@@ -1,12 +1,14 @@
 import { useState } from 'react'
-import { ChevronLeft, ChevronRight, Play, MessageCircle, BookOpen } from 'lucide-react'
+import { MessageCircle, BookOpen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
 import { Separator } from '@/components/ui/separator'
-import { ScrollArea } from '@/components/ui/scroll-area'
 import { Link } from 'react-router-dom'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+import Sidebar from '@/components/learning/Sidebar'
+import VideoSection from '@/components/learning/VideoSection'
+import TranscriptPreview from '@/components/learning/TranscriptPreview'
 
 const topics = [
   {
@@ -102,58 +104,14 @@ const Learn = () => {
       <Navbar />
       
       <div className="flex pt-16 flex-1">
-        {/* Sidebar */}
-        <div 
-          className={`relative h-[calc(100vh-4rem)] bg-white border-r border-neutral-200 transition-all duration-300 ${
-            sidebarCollapsed ? 'w-0' : 'w-full md:w-80 lg:w-96'
-          }`}
-        >
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute -right-4 top-4 z-50 rounded-full bg-white border border-neutral-200 shadow-sm"
-            onClick={() => setSidebarCollapsed(!sidebarCollapsed)}
-          >
-            {sidebarCollapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-          </Button>
+        <Sidebar 
+          topics={topics}
+          selectedTopic={selectedTopic}
+          sidebarCollapsed={sidebarCollapsed}
+          setSidebarCollapsed={setSidebarCollapsed}
+          onTopicSelect={setSelectedTopic}
+        />
 
-          <div className={`w-full ${sidebarCollapsed ? 'hidden' : 'block'}`}>
-            <div className="p-6 border-b border-neutral-200">
-              <h2 className="font-serif text-2xl font-semibold text-accent">Course Content</h2>
-              <p className="text-sm text-neutral-600 mt-1">10 lessons • 3.5 hours</p>
-            </div>
-
-            <ScrollArea className="h-[calc(100vh-10rem)] p-4">
-              <div className="space-y-2">
-                {topics.map((topic) => (
-                  <Card 
-                    key={topic.id}
-                    className={`p-4 cursor-pointer transition-all hover:shadow-md ${
-                      selectedTopic.id === topic.id 
-                        ? 'border-primary bg-primary/5' 
-                        : 'hover:border-primary/50'
-                    }`}
-                    onClick={() => setSelectedTopic(topic)}
-                  >
-                    <div className="flex items-start gap-3">
-                      <div className="rounded-full bg-primary/10 p-2">
-                        <Play className={`h-4 w-4 ${
-                          selectedTopic.id === topic.id ? 'text-primary' : 'text-primary/60'
-                        }`} />
-                      </div>
-                      <div className="flex-1">
-                        <h3 className="font-medium text-sm">{topic.title}</h3>
-                        <p className="text-xs text-neutral-600 mt-1">{topic.duration}</p>
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </div>
-            </ScrollArea>
-          </div>
-        </div>
-
-        {/* Main Content */}
         <div className="flex-1 p-6">
           <div className="max-w-5xl mx-auto">
             <div className="mb-6">
@@ -165,29 +123,10 @@ const Learn = () => {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* English Video */}
-              <Card className="aspect-video bg-neutral-900 overflow-hidden">
-                <iframe
-                  className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${selectedTopic.videoEnglish}`}
-                  title="English Version"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </Card>
-
-              {/* Swahili Video */}
-              <Card className="aspect-video bg-neutral-900 overflow-hidden">
-                <iframe
-                  className="w-full h-full"
-                  src={`https://www.youtube.com/embed/${selectedTopic.videoSwahili}`}
-                  title="Swahili Version"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                />
-              </Card>
-            </div>
+            <VideoSection 
+              videoEnglish={selectedTopic.videoEnglish}
+              videoSwahili={selectedTopic.videoSwahili}
+            />
 
             <div className="mt-8 flex justify-center gap-4">
               <Link to={`/story/${selectedTopic.id}`}>
@@ -202,32 +141,10 @@ const Learn = () => {
 
             <Separator className="my-8" />
 
-            {/* Transcripts Preview */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <Card className="p-6">
-                <h3 className="font-medium mb-4 flex items-center gap-2">
-                  <BookOpen className="h-4 w-4 text-primary" />
-                  English Story Preview
-                </h3>
-                <div className="rounded-lg bg-neutral-50 p-4">
-                  <p className="text-sm text-neutral-700 leading-relaxed line-clamp-3">
-                    {selectedTopic.transcriptEnglish}
-                  </p>
-                </div>
-              </Card>
-
-              <Card className="p-6">
-                <h3 className="font-medium mb-4 flex items-center gap-2">
-                  <BookOpen className="h-4 w-4 text-primary" />
-                  Hadithi ya Kiswahili (Muhtasari)
-                </h3>
-                <div className="rounded-lg bg-neutral-50 p-4">
-                  <p className="text-sm text-neutral-700 leading-relaxed line-clamp-3">
-                    {selectedTopic.transcriptSwahili}
-                  </p>
-                </div>
-              </Card>
-            </div>
+            <TranscriptPreview 
+              transcriptEnglish={selectedTopic.transcriptEnglish}
+              transcriptSwahili={selectedTopic.transcriptSwahili}
+            />
           </div>
         </div>
       </div>
@@ -259,7 +176,7 @@ const Learn = () => {
 
       <Footer />
     </div>
-  );
-};
+  )
+}
 
-export default Learn;
+export default Learn
