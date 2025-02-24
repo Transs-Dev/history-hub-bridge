@@ -8,6 +8,11 @@ interface Topic {
   id: number
   title: string
   duration: string
+  description: string
+  videoEnglish?: string
+  videoSwahili?: string
+  transcriptEnglish?: string
+  transcriptSwahili?: string
 }
 
 interface SidebarProps {
