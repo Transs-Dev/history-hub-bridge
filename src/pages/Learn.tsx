@@ -1,5 +1,5 @@
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { MessageCircle, BookOpen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Card } from '@/components/ui/card'
@@ -7,121 +7,248 @@ import { Separator } from '@/components/ui/separator'
 import { Link } from 'react-router-dom'
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
-import Sidebar from '@/components/learning/Sidebar'
+import Sidebar, { Topic, Subtopic } from '@/components/learning/Sidebar'
 import VideoSection from '@/components/learning/VideoSection'
 import TranscriptPreview from '@/components/learning/TranscriptPreview'
 
-const topics = [
+// Updated topics with subtopics
+const initialTopics: Topic[] = [
   {
     id: 1,
     title: "Introduction to Virtual Assistance",
-    duration: "25:10",
     description: "Learn the fundamentals of virtual assistance and why it's a growing career choice.",
-    videoEnglish: "5H440XeZG_E",
-    videoSwahili: "UMZYIKHnce4",
-    transcriptEnglish: `Virtual assistance is a rapidly growing field in today's digital economy. A Virtual Assistant (VA) is a professional who provides administrative, technical, or creative assistance to clients remotely. This module will introduce you to the VA industry, explore the growing demand for virtual services, and outline the different types of virtual assistants in the market today. We'll also cover the fundamental skills required to become a successful VA.`,
-    transcriptSwahili: `Usaidizi wa mtandaoni ni nyanja inayokua kwa kasi katika uchumi wa dijitali wa leo. Msaidizi wa mtandaoni (VA) ni mtaalamu ambaye hutoa usaidizi wa kiutawala, kiufundi, au ubunifu kwa wateja kwa mbali. Moduli hii itakutambulisha kwa tasnia ya VA, itachunguza mahitaji yanayokua ya huduma za mtandaoni, na kubainisha aina tofauti za wasaidizi wa mtandaoni katika soko la leo. Pia tutashughulikia ujuzi wa msingi unaohitajika kuwa VA mwenye mafanikio.`
+    videoId: "5H440XeZG_E",
+    transcript: `Virtual assistance is a rapidly growing field in today's digital economy. A Virtual Assistant (VA) is a professional who provides administrative, technical, or creative assistance to clients remotely. This module introduces you to the VA industry, explores the growing demand for virtual services, and outlines the different types of virtual assistants in the market today. We'll also cover the fundamental skills required to become a successful VA.`,
+    subtopics: [
+      { id: "1-1", title: "What is a Virtual Assistant (VA)?", completed: false },
+      { id: "1-2", title: "The growing demand for VAs", completed: false },
+      { id: "1-3", title: "Different types of virtual assistants", completed: false },
+      { id: "1-4", title: "Skills required to become a VA", completed: false }
+    ],
+    completed: false
   },
   {
     id: 2,
-    title: "What is a Virtual Assistant?",
-    duration: "15:20",
-    description: "Understand the role and responsibilities of a professional VA.",
-    videoEnglish: "kn4n4auk6T4",
-    videoSwahili: "lOIQPHSaqW0",
-    transcriptEnglish: `In this lesson, we'll define exactly what a virtual assistant is and how this role differs from traditional assistants. We'll explore the key responsibilities, typical tasks, and the advantages of working as a VA. You'll also learn about the business models in the VA industry, from freelancing to agency work.`,
-    transcriptSwahili: `Katika somo hili, tutafafanua kwa usahihi msaidizi wa mtandaoni ni nini na jinsi jukumu hili linatofautiana na wasaidizi wa kawaida. Tutachunguza majukumu muhimu, kazi za kawaida, na faida za kufanya kazi kama VA. Utajifunza pia kuhusu mifumo ya biashara katika tasnia ya VA, kuanzia uhuru hadi kazi ya wakala.`
+    title: "Essential Skills for Virtual Assistants",
+    description: "Master the core competencies needed for any successful VA career.",
+    videoId: "kn4n4auk6T4",
+    transcript: `What skills do you need to succeed as a virtual assistant? This comprehensive module covers the essential competencies required in the VA profession, including communication, time management, customer service, and technical skills. You'll learn how to assess your current abilities and create a plan to develop areas where you need improvement.`,
+    subtopics: [
+      { id: "2-1", title: "Communication & email management", completed: false },
+      { id: "2-2", title: "Time management & productivity tools", completed: false },
+      { id: "2-3", title: "Customer service & client handling", completed: false },
+      { id: "2-4", title: "Data entry & administrative support", completed: false },
+      { id: "2-5", title: "Social media management basics", completed: false }
+    ],
+    completed: false
   },
   {
     id: 3,
-    title: "Growing Demand for VAs",
-    duration: "14:30",
-    description: "Explore the market trends and opportunities in the VA industry.",
-    videoEnglish: "qYY-Z8Bsvj8",
-    videoSwahili: "UMZYIKHnce4",
-    transcriptEnglish: `The demand for virtual assistants has skyrocketed in recent years. This lesson analyzes current market trends, identifies which industries are hiring VAs the most, and explores future projections for the virtual assistance field. We'll also discuss how global events like the pandemic have accelerated remote work adoption and created more opportunities for virtual professionals.`,
-    transcriptSwahili: `Mahitaji ya wasaidizi wa mtandaoni yameongezeka sana katika miaka ya hivi karibuni. Somo hili linachambua mienendo ya soko ya sasa, inatambua viwanda gani vinaajiri VA zaidi, na kuchunguza matarajio ya baadaye kwa uwanja wa usaidizi wa mtandaoni. Tutajadili pia jinsi matukio ya kimataifa kama janga yameharakisha utumiaji wa kazi ya mbali na kuunda fursa zaidi kwa wataalamu wa mtandaoni.`
+    title: "Tools & Software for Virtual Assistants",
+    description: "Master the essential technology and software used in the VA industry.",
+    videoId: "qYY-Z8Bsvj8",
+    transcript: `The right tools can dramatically increase your efficiency and value as a VA. This module introduces you to the essential software and technologies used in the virtual assistance industry. From communication platforms to project management systems, you'll learn which tools to master and how they can streamline your workflow.`,
+    subtopics: [
+      { id: "3-1", title: "Communication tools (Zoom, Slack, Microsoft Teams)", completed: false },
+      { id: "3-2", title: "Project management tools (Trello, Asana, ClickUp)", completed: false },
+      { id: "3-3", title: "CRM & email marketing tools (HubSpot, Mailchimp)", completed: false },
+      { id: "3-4", title: "Accounting & invoicing software (QuickBooks, Wave)", completed: false }
+    ],
+    completed: false
   },
   {
     id: 4,
-    title: "Types of Virtual Assistants",
-    duration: "20:15",
-    description: "Discover the various specializations and niches within virtual assistance.",
-    videoEnglish: "kn4n4auk6T4",
-    videoSwahili: "UMZYIKHnce4",
-    transcriptEnglish: `Not all virtual assistants are the same. This lesson categorizes the different types of VAs, from general administrative assistants to specialized professionals in fields like social media management, content creation, bookkeeping, and more. You'll learn about the various specializations available to you and how to identify which type aligns best with your skills and interests.`,
-    transcriptSwahili: `Wasaidizi wote wa mtandaoni sio sawa. Somo hili linabainisha aina tofauti za VA, kuanzia wasaidizi wa kiutawala wa jumla hadi wataalamu maalum katika nyanja kama vile usimamizi wa mitandao ya kijamii, uundaji wa maudhui, uwekaji wa vitabu, na zaidi. Utajifunza kuhusu utaalamu mbalimbali unaopatikana kwako na jinsi ya kutambua ni aina gani inaoana vyema na ujuzi na maslahi yako.`
+    title: "Finding Clients & Starting Your VA Business",
+    description: "Learn how to launch your VA business and attract your first clients.",
+    videoId: "5H440XeZG_E",
+    transcript: `Ready to start your VA business? This comprehensive module will guide you through identifying your niche, setting up your professional presence, finding your first clients, and establishing your business operations. You'll learn practical strategies for marketing yourself, setting your rates, and creating client contracts.`,
+    subtopics: [
+      { id: "4-1", title: "Identifying your niche and services", completed: false },
+      { id: "4-2", title: "Setting up a professional online presence", completed: false },
+      { id: "4-3", title: "How to market yourself and find clients", completed: false },
+      { id: "4-4", title: "Pricing your services and creating contracts", completed: false }
+    ],
+    completed: false
   },
   {
     id: 5,
-    title: "Essential Skills for Virtual Assistants",
-    duration: "22:30",
-    description: "Master the core competencies needed for any successful VA career.",
-    videoEnglish: "5H440XeZG_E",
-    videoSwahili: "UMZYIKHnce4",
-    transcriptEnglish: `What skills do you need to succeed as a virtual assistant? This comprehensive module covers the essential competencies required in the VA profession, including communication, time management, customer service, and technical skills. You'll learn how to assess your current abilities and create a plan to develop areas where you need improvement.`,
-    transcriptSwahili: `Ni ujuzi gani unahitaji kufanikiwa kama msaidizi wa mtandaoni? Moduli hii kamili inashughulikia umahiri muhimu unaohitajika katika taaluma ya VA, ikiwa ni pamoja na mawasiliano, usimamizi wa muda, huduma kwa wateja, na ujuzi wa kiufundi. Utajifunza jinsi ya kutathmini uwezo wako wa sasa na kuunda mpango wa kuendeleza maeneo ambayo unahitaji kuboresha.`
-  },
-  {
-    id: 6,
-    title: "Communication & Email Management",
-    duration: "19:45",
-    description: "Learn effective communication strategies and email management techniques.",
-    videoEnglish: "qYY-Z8Bsvj8",
-    videoSwahili: "UMZYIKHnce4",
-    transcriptEnglish: `Effective communication is arguably the most important skill for a virtual assistant. This lesson covers professional communication techniques, email management strategies, and tools to streamline your communication workflow. You'll learn how to write professional emails, manage your client's inbox, and handle communication across different time zones and cultures.`,
-    transcriptSwahili: `Mawasiliano mazuri bila shaka ni ujuzi muhimu zaidi kwa msaidizi wa mtandaoni. Somo hili linashughulikia mbinu za mawasiliano ya kitaalamu, mikakati ya usimamizi wa barua pepe, na zana za kurahisisha mtiririko wako wa mawasiliano. Utajifunza jinsi ya kuandika barua pepe za kitaalamu, kusimamia inbox ya mteja wako, na kushughulikia mawasiliano katika majira tofauti na tamaduni.`
-  },
-  {
-    id: 7,
-    title: "Time Management & Productivity",
-    duration: "16:20",
-    description: "Discover strategies to maximize productivity and manage multiple clients.",
-    videoEnglish: "kn4n4auk6T4",
-    videoSwahili: "UMZYIKHnce4",
-    transcriptEnglish: `As a VA, you'll often juggle multiple clients and deadlines. This lesson focuses on time management techniques, productivity tools, and strategies to prioritize tasks effectively. You'll learn how to track your time, avoid burnout, and create systems that help you deliver high-quality work consistently.`,
-    transcriptSwahili: `Kama VA, mara nyingi utasongeza wateja wengi na tarehe za mwisho. Somo hili linazingatia mbinu za usimamizi wa muda, zana za uzalishaji, na mikakati ya kupanga kazi kwa ufanisi. Utajifunza jinsi ya kufuatilia muda wako, kuepuka kuteketea, na kuunda mifumo inayokusaidia kutoa kazi ya ubora wa juu kila wakati.`
-  },
-  {
-    id: 8,
-    title: "Tools & Software for Virtual Assistants",
-    duration: "23:15",
-    description: "Master the essential technology and software used in the VA industry.",
-    videoEnglish: "5H440XeZG_E",
-    videoSwahili: "UMZYIKHnce4",
-    transcriptEnglish: `The right tools can dramatically increase your efficiency and value as a VA. This module introduces you to the essential software and technologies used in the virtual assistance industry. From communication platforms to project management systems, you'll learn which tools to master and how they can streamline your workflow.`,
-    transcriptSwahili: `Zana sahihi zinaweza kuongeza ufanisi na thamani yako kama VA kwa kiasi kikubwa. Moduli hii inakutambulisha kwa programu muhimu na teknolojia zinazotumika katika tasnia ya usaidizi wa mtandaoni. Kuanzia majukwaa ya mawasiliano hadi mifumo ya usimamizi wa miradi, utajifunza ni zana zipi za kumudu na jinsi zinaweza kurahisisha mtiririko wako wa kazi.`
-  },
-  {
-    id: 9,
-    title: "Communication Tools",
-    duration: "16:20",
-    description: "Learn to use popular communication platforms like Zoom, Slack, and Microsoft Teams.",
-    videoEnglish: "qYY-Z8Bsvj8",
-    videoSwahili: "UMZYIKHnce4",
-    transcriptEnglish: `This lesson provides a comprehensive overview of the communication tools essential for virtual assistants. You'll learn how to use Zoom for video meetings, Slack for team communication, and Microsoft Teams for collaborative work. We'll cover setup, best practices, and tips for troubleshooting common issues.`,
-    transcriptSwahili: `Somo hili linatoa muhtasari kamili wa zana za mawasiliano muhimu kwa wasaidizi wa mtandaoni. Utajifunza jinsi ya kutumia Zoom kwa mikutano ya video, Slack kwa mawasiliano ya timu, na Microsoft Teams kwa kazi za ushirikiano. Tutashughulikia usanidi, mazoea bora, na vidokezo vya kutatua matatizo ya kawaida.`
-  },
-  {
-    id: 10,
-    title: "Finding Clients & Starting Your VA Business",
-    duration: "27:40",
-    description: "Learn how to launch your VA business and attract your first clients.",
-    videoEnglish: "5H440XeZG_E",
-    videoSwahili: "UMZYIKHnce4",
-    transcriptEnglish: `Ready to start your VA business? This comprehensive module will guide you through identifying your niche, setting up your professional presence, finding your first clients, and establishing your business operations. You'll learn practical strategies for marketing yourself, setting your rates, and creating client contracts.`,
-    transcriptSwahili: `Uko tayari kuanza biashara yako ya VA? Moduli hii kamili itakuongoza katika kutambua sehemu yako, kuanzisha uwepo wako wa kitaalamu, kupata wateja wako wa kwanza, na kuanzisha shughuli za biashara yako. Utajifunza mikakati ya vitendo ya kujinadi, kuweka viwango vyako, na kuunda mikataba ya wateja.`
+    title: "Advanced Virtual Assistant Services",
+    description: "Expand your service offerings with specialized VA skills.",
+    videoId: "qYY-Z8Bsvj8",
+    transcript: `As you grow your VA business, you may want to offer more specialized services that can command higher rates. This module explores advanced VA services such as social media management, content creation, SEO, blog management, e-commerce support, and bookkeeping. You'll learn how to upskill in these areas and market these premium services to clients.`,
+    subtopics: [
+      { id: "5-1", title: "Social media management & content creation", completed: false },
+      { id: "5-2", title: "SEO & blog management", completed: false },
+      { id: "5-3", title: "E-commerce support (Amazon, Shopify, Etsy)", completed: false },
+      { id: "5-4", title: "Bookkeeping & financial tasks", completed: false }
+    ],
+    completed: false
   }
-]
+];
+
+// Sample quiz questions for each topic
+const quizQuestions = {
+  1: [
+    {
+      id: "q1-1",
+      text: "What is a Virtual Assistant?",
+      options: [
+        { id: "a", text: "A digital robot assistant like Siri or Alexa" },
+        { id: "b", text: "A software program that automates tasks" },
+        { id: "c", text: "A professional who provides services to clients remotely" },
+        { id: "d", text: "An in-person administrative assistant" }
+      ],
+      correctAnswer: "c"
+    },
+    {
+      id: "q1-2",
+      text: "Which of the following is driving the growth in demand for virtual assistants?",
+      options: [
+        { id: "a", text: "Decreasing internet speeds globally" },
+        { id: "b", text: "The rise of remote work and digital businesses" },
+        { id: "c", text: "Reduced use of technology in businesses" },
+        { id: "d", text: "Increasing office space availability" }
+      ],
+      correctAnswer: "b"
+    }
+  ],
+  2: [
+    {
+      id: "q2-1",
+      text: "Which skill is NOT typically considered essential for virtual assistants?",
+      options: [
+        { id: "a", text: "Communication skills" },
+        { id: "b", text: "Time management" },
+        { id: "c", text: "Physical strength" },
+        { id: "d", text: "Customer service" }
+      ],
+      correctAnswer: "c"
+    },
+    {
+      id: "q2-2",
+      text: "Why is email management an important skill for VAs?",
+      options: [
+        { id: "a", text: "It's the only way VAs communicate with clients" },
+        { id: "b", text: "Clients often need help organizing their inbox and responding to messages" },
+        { id: "c", text: "Email is becoming obsolete in business" },
+        { id: "d", text: "VAs typically don't handle email" }
+      ],
+      correctAnswer: "b"
+    }
+  ],
+  3: [
+    {
+      id: "q3-1",
+      text: "Which of these is NOT typically considered a communication tool for VAs?",
+      options: [
+        { id: "a", text: "Zoom" },
+        { id: "b", text: "Slack" },
+        { id: "c", text: "QuickBooks" },
+        { id: "d", text: "Microsoft Teams" }
+      ],
+      correctAnswer: "c"
+    },
+    {
+      id: "q3-2",
+      text: "What type of tool would Trello be classified as?",
+      options: [
+        { id: "a", text: "Communication tool" },
+        { id: "b", text: "Project management tool" },
+        { id: "c", text: "Accounting software" },
+        { id: "d", text: "CRM software" }
+      ],
+      correctAnswer: "b"
+    }
+  ],
+  4: [
+    {
+      id: "q4-1",
+      text: "What is a niche in the context of VA services?",
+      options: [
+        { id: "a", text: "The location where you work" },
+        { id: "b", text: "The specialized area or industry you focus your services on" },
+        { id: "c", text: "The number of clients you can handle" },
+        { id: "d", text: "The software you use most frequently" }
+      ],
+      correctAnswer: "b"
+    },
+    {
+      id: "q4-2",
+      text: "Which platform is NOT typically used by VAs to find clients?",
+      options: [
+        { id: "a", text: "Upwork" },
+        { id: "b", text: "Fiverr" },
+        { id: "c", text: "LinkedIn" },
+        { id: "d", text: "Instagram" }
+      ],
+      correctAnswer: "d"
+    }
+  ],
+  5: [
+    {
+      id: "q5-1",
+      text: "What does SEO stand for?",
+      options: [
+        { id: "a", text: "Social Email Optimization" },
+        { id: "b", text: "Search Engine Optimization" },
+        { id: "c", text: "Service Excellence Organization" },
+        { id: "d", text: "Systematic Email Operations" }
+      ],
+      correctAnswer: "b"
+    },
+    {
+      id: "q5-2",
+      text: "Which of these is NOT typically part of a VA's e-commerce support services?",
+      options: [
+        { id: "a", text: "Inventory management" },
+        { id: "b", text: "Customer service" },
+        { id: "c", text: "Manufacturing products" },
+        { id: "d", text: "Order processing" }
+      ],
+      correctAnswer: "c"
+    }
+  ]
+};
 
 const Learn = () => {
-  const [selectedTopic, setSelectedTopic] = useState(topics[0])
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [showChat, setShowChat] = useState(false)
+  const [topics, setTopics] = useState<Topic[]>(() => {
+    const savedTopics = localStorage.getItem('va-topics');
+    return savedTopics ? JSON.parse(savedTopics) : initialTopics;
+  });
+  const [selectedTopic, setSelectedTopic] = useState<Topic>(topics[0]);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+
+  useEffect(() => {
+    // Update selected topic when topics change (e.g., marking as complete)
+    const updatedSelectedTopic = topics.find(t => t.id === selectedTopic.id);
+    if (updatedSelectedTopic) {
+      setSelectedTopic(updatedSelectedTopic);
+    }
+  }, [topics]);
+
+  useEffect(() => {
+    // Save progress to localStorage
+    localStorage.setItem('va-topics', JSON.stringify(topics));
+  }, [topics]);
 
   const handleWhatsAppClick = () => {
     window.open(`https://wa.me/254745087870?text=${encodeURIComponent('Hi, I have a question about the Virtual Assistant training program.')}`, '_blank');
-  }
+  };
+
+  const handleTopicSelect = (topic: Topic) => {
+    setSelectedTopic(topic);
+  };
+
+  const handleMarkTopicComplete = () => {
+    setTopics(prevTopics => 
+      prevTopics.map(topic => 
+        topic.id === selectedTopic.id 
+          ? { ...topic, completed: true } 
+          : topic
+      )
+    );
+  };
 
   return (
     <div className="min-h-screen bg-neutral-50 flex flex-col">
@@ -133,10 +260,10 @@ const Learn = () => {
           selectedTopic={selectedTopic}
           sidebarCollapsed={sidebarCollapsed}
           setSidebarCollapsed={setSidebarCollapsed}
-          onTopicSelect={setSelectedTopic}
+          onTopicSelect={handleTopicSelect}
         />
 
-        <div className="flex-1 p-6">
+        <div className="flex-1 p-6 overflow-y-auto">
           <div className="max-w-5xl mx-auto">
             <div className="mb-6">
               <h1 className="font-serif text-3xl font-semibold text-accent mb-2">
@@ -147,10 +274,7 @@ const Learn = () => {
               </p>
             </div>
 
-            <VideoSection 
-              videoEnglish={selectedTopic.videoEnglish}
-              videoSwahili={selectedTopic.videoSwahili}
-            />
+            <VideoSection videoId={selectedTopic.videoId} />
 
             <div className="mt-8 flex justify-center gap-4">
               <Link to={`/story/${selectedTopic.id}`}>
@@ -166,8 +290,10 @@ const Learn = () => {
             <Separator className="my-8" />
 
             <TranscriptPreview 
-              transcriptEnglish={selectedTopic.transcriptEnglish}
-              transcriptSwahili={selectedTopic.transcriptSwahili}
+              transcript={selectedTopic.transcript}
+              questions={quizQuestions[selectedTopic.id as keyof typeof quizQuestions]}
+              onComplete={handleMarkTopicComplete}
+              isCompleted={selectedTopic.completed}
             />
           </div>
         </div>

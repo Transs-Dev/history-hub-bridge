@@ -8,9 +8,9 @@ const Footer = () => {
       <div className="container mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="font-serif text-xl font-semibold mb-4">Islamic History Hub</h3>
+            <h3 className="font-serif text-xl font-semibold mb-4">Virtual Assistant Academy</h3>
             <p className="text-neutral-200 text-sm">
-              Discover the rich history of Islam through engaging bilingual content.
+              Launch your virtual assistant career with professional training and ongoing support.
             </p>
           </div>
 
@@ -45,7 +45,7 @@ const Footer = () => {
             <ul className="space-y-2">
               <li className="flex items-center gap-2 text-neutral-200">
                 <Mail className="h-4 w-4" />
-                omarwashe414@gmail.com
+                info@vaacademy.com
               </li>
               <li className="flex items-center gap-2 text-neutral-200">
                 <Phone className="h-4 w-4" />
@@ -69,7 +69,7 @@ const Footer = () => {
         </div>
 
         <div className="border-t border-white/10 mt-8 pt-8 text-center text-neutral-200">
-          <p>&copy; {new Date().getFullYear()} Islamic History Hub. Founded by Omar Washe Konde. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Virtual Assistant Academy. All rights reserved.</p>
         </div>
       </div>
     </footer>

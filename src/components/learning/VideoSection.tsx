@@ -2,31 +2,26 @@
 import { Card } from '@/components/ui/card'
 
 interface VideoSectionProps {
-  videoEnglish: string
-  videoSwahili: string
+  videoId?: string;
 }
 
-const VideoSection = ({ videoEnglish, videoSwahili }: VideoSectionProps) => {
+const VideoSection = ({ videoId }: VideoSectionProps) => {
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div className="w-full">
       <Card className="aspect-video bg-neutral-900 overflow-hidden">
-        <iframe
-          className="w-full h-full"
-          src={`https://www.youtube.com/embed/${videoEnglish}`}
-          title="English Version"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
-      </Card>
-
-      <Card className="aspect-video bg-neutral-900 overflow-hidden">
-        <iframe
-          className="w-full h-full"
-          src={`https://www.youtube.com/embed/${videoSwahili}`}
-          title="Swahili Version"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-        />
+        {videoId ? (
+          <iframe
+            className="w-full h-full"
+            src={`https://www.youtube.com/embed/${videoId}`}
+            title="Virtual Assistant Training"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-white">
+            No video available for this topic
+          </div>
+        )}
       </Card>
     </div>
   )
