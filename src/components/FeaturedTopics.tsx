@@ -1,22 +1,22 @@
 
 import { Card } from '@/components/ui/card';
-import { BookOpen, Video, Globe } from 'lucide-react';
+import { Users, Clock, Briefcase } from 'lucide-react';
 
 const topics = [
   {
-    title: "Birth of Prophet Muhammad",
-    description: "Learn about the historical context and events surrounding the birth of Prophet Muhammad (peace be upon him).",
-    icon: BookOpen,
+    title: "Introduction to Virtual Assistance",
+    description: "Learn what a virtual assistant does, the growing demand, and essential skills required to succeed in this field.",
+    icon: Users,
   },
   {
-    title: "The First Revelation",
-    description: "Explore the profound moment of the first divine revelation and its significance in Islamic history.",
-    icon: Video,
+    title: "Essential Skills for Virtual Assistants",
+    description: "Master communication, time management, customer service, and administrative support skills crucial for any VA.",
+    icon: Clock,
   },
   {
-    title: "Spread of Islam",
-    description: "Discover how Islam spread from Mecca to different parts of the world through peaceful means.",
-    icon: Globe,
+    title: "Finding Clients & Starting Your Business",
+    description: "Discover how to identify your niche, set up your online presence, and attract your first clients.",
+    icon: Briefcase,
   }
 ];
 
@@ -27,7 +27,7 @@ const FeaturedTopics = () => {
         <div className="text-center mb-12">
           <h2 className="font-serif text-4xl font-bold text-accent mb-4">Featured Topics</h2>
           <p className="text-neutral-800 text-lg max-w-2xl mx-auto">
-            Begin your journey with these carefully curated topics, available in both English and Swahili
+            Begin your journey with these essential virtual assistant topics designed to launch your remote career
           </p>
         </div>
 

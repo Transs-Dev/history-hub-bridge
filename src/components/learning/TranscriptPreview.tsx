@@ -13,7 +13,7 @@ const TranscriptPreview = ({ transcriptEnglish, transcriptSwahili }: TranscriptP
       <Card className="p-6">
         <h3 className="font-medium mb-4 flex items-center gap-2">
           <BookOpen className="h-4 w-4 text-primary" />
-          English Story Preview
+          Lesson Preview (English)
         </h3>
         <div className="rounded-lg bg-neutral-50 p-4">
           <p className="text-sm text-neutral-700 leading-relaxed line-clamp-3">
@@ -25,7 +25,7 @@ const TranscriptPreview = ({ transcriptEnglish, transcriptSwahili }: TranscriptP
       <Card className="p-6">
         <h3 className="font-medium mb-4 flex items-center gap-2">
           <BookOpen className="h-4 w-4 text-primary" />
-          Hadithi ya Kiswahili (Muhtasari)
+          Maudhui ya Somo (Kiswahili)
         </h3>
         <div className="rounded-lg bg-neutral-50 p-4">
           <p className="text-sm text-neutral-700 leading-relaxed line-clamp-3">

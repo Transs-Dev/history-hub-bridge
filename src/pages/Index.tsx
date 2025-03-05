@@ -7,18 +7,8 @@ import Testimonials from '@/components/Testimonials';
 import Footer from '@/components/Footer';
 
 const Index = () => {
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = 0.2; // Set volume to 20%
-      audioRef.current.play().catch(error => console.log("Audio autoplay prevented:", error));
-    }
-  }, []);
-
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#FEF9F3] to-white">
-      <audio ref={audioRef} src="https://server8.mp3quran.net/ahmad_huth/255.mp3" />
+    <div className="min-h-screen bg-gradient-to-b from-[#F9FAFB] to-white">
       <Navbar />
       <main className="pt-16">
         <Hero />
@@ -28,31 +18,31 @@ const Index = () => {
           <div className="container mx-auto px-4">
             <div className="max-w-4xl mx-auto text-center">
               <h2 className="font-serif text-4xl font-bold text-accent mb-8 leading-tight">
-                Bridging Knowledge Through Language
+                Why Choose Our Virtual Assistant Program?
               </h2>
               <div className="grid md:grid-cols-2 gap-8 text-left">
                 <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                  <h3 className="text-xl font-semibold text-primary mb-4">Dual Language Learning</h3>
+                  <h3 className="text-xl font-semibold text-primary mb-4">Industry-Relevant Skills</h3>
                   <p className="text-neutral-700">
-                    Our platform uniquely offers Islamic history content in both English and Swahili, making knowledge accessible to a wider audience across East Africa and beyond.
+                    Our curriculum is designed with input from actual business owners and experienced VAs to ensure you learn exactly what the market demands.
                   </p>
                 </div>
                 <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                  <h3 className="text-xl font-semibold text-primary mb-4">Expert-Led Content</h3>
+                  <h3 className="text-xl font-semibold text-primary mb-4">Practical Learning</h3>
                   <p className="text-neutral-700">
-                    Each lesson is carefully crafted by scholars and historians, ensuring accurate and comprehensive coverage of Islamic history.
+                    Every lesson includes hands-on exercises and real-world examples to help you apply your new skills immediately.
                   </p>
                 </div>
                 <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                  <h3 className="text-xl font-semibold text-primary mb-4">Interactive Learning</h3>
+                  <h3 className="text-xl font-semibold text-primary mb-4">Business Launch Support</h3>
                   <p className="text-neutral-700">
-                    Engage with our content through video lessons, transcripts, and real-time support for an enhanced learning experience.
+                    Beyond just skills, we provide templates, guidance, and resources to help you set up and market your VA business.
                   </p>
                 </div>
                 <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition-shadow">
-                  <h3 className="text-xl font-semibold text-primary mb-4">Community Focus</h3>
+                  <h3 className="text-xl font-semibold text-primary mb-4">Community Access</h3>
                   <p className="text-neutral-700">
-                    Join a growing community of learners passionate about understanding and preserving Islamic history.
+                    Join our community of aspiring and established VAs for networking, support, and potential collaboration opportunities.
                   </p>
                 </div>
               </div>
