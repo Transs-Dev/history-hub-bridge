@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react'
 import { MessageCircle, BookOpen } from 'lucide-react'
 import { Button } from '@/components/ui/button'
@@ -11,7 +10,7 @@ import Sidebar, { Topic, Subtopic } from '@/components/learning/Sidebar'
 import VideoSection from '@/components/learning/VideoSection'
 import TranscriptPreview from '@/components/learning/TranscriptPreview'
 
-// Updated topics with subtopics
+// Updated topics with subtopics and notes
 const initialTopics: Topic[] = [
   {
     id: 1,
@@ -20,10 +19,30 @@ const initialTopics: Topic[] = [
     videoId: "5H440XeZG_E",
     transcript: `Virtual assistance is a rapidly growing field in today's digital economy. A Virtual Assistant (VA) is a professional who provides administrative, technical, or creative assistance to clients remotely. This module introduces you to the VA industry, explores the growing demand for virtual services, and outlines the different types of virtual assistants in the market today. We'll also cover the fundamental skills required to become a successful VA.`,
     subtopics: [
-      { id: "1-1", title: "What is a Virtual Assistant (VA)?", completed: false },
-      { id: "1-2", title: "The growing demand for VAs", completed: false },
-      { id: "1-3", title: "Different types of virtual assistants", completed: false },
-      { id: "1-4", title: "Skills required to become a VA", completed: false }
+      { 
+        id: "1-1", 
+        title: "What is a Virtual Assistant (VA)?", 
+        completed: false,
+        notes: "A Virtual Assistant (VA) is a professional who provides administrative, technical, or creative assistance to clients remotely from a home office. VAs operate as independent contractors rather than employees, supporting businesses without requiring physical office space or full-time salaries and benefits."
+      },
+      { 
+        id: "1-2", 
+        title: "The growing demand for VAs", 
+        completed: false,
+        notes: "The demand for virtual assistants has exploded with the rise of digital entrepreneurship, remote work trends, and businesses looking to scale efficiently. Small businesses and solopreneurs especially find VAs to be cost-effective alternatives to hiring full-time staff, as they can pay for only the hours or services they need."
+      },
+      { 
+        id: "1-3", 
+        title: "Different types of virtual assistants", 
+        completed: false,
+        notes: "Virtual assistants specialize in various areas: General VAs handle administrative tasks like email and calendar management. Specialized VAs focus on technical areas like social media management, content creation, bookkeeping, or customer service. Executive VAs provide high-level support to executives and business owners, often handling sensitive information and complex projects."
+      },
+      { 
+        id: "1-4", 
+        title: "Skills required to become a VA", 
+        completed: false,
+        notes: "Essential skills for virtual assistants include strong communication (written and verbal), time management, computer literacy, problem-solving ability, attention to detail, and self-motivation. Technical skills with common business software and tools are also crucial. Successful VAs must be adaptable, reliable, and able to work independently with minimal supervision."
+      }
     ],
     completed: false
   },
@@ -216,6 +235,7 @@ const Learn = () => {
     return savedTopics ? JSON.parse(savedTopics) : initialTopics;
   });
   const [selectedTopic, setSelectedTopic] = useState<Topic>(topics[0]);
+  const [selectedSubtopic, setSelectedSubtopic] = useState<Subtopic | undefined>(topics[0].subtopics[0]);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const [showChat, setShowChat] = useState(false);
 
@@ -224,6 +244,15 @@ const Learn = () => {
     const updatedSelectedTopic = topics.find(t => t.id === selectedTopic.id);
     if (updatedSelectedTopic) {
       setSelectedTopic(updatedSelectedTopic);
+      
+      // If the current subtopic belongs to this topic, update it too
+      if (selectedSubtopic && updatedSelectedTopic.subtopics.some(s => s.id === selectedSubtopic.id)) {
+        const updatedSubtopic = updatedSelectedTopic.subtopics.find(s => s.id === selectedSubtopic.id);
+        setSelectedSubtopic(updatedSubtopic);
+      } else {
+        // Default to first subtopic if current one is not in this topic
+        setSelectedSubtopic(updatedSelectedTopic.subtopics[0]);
+      }
     }
   }, [topics]);
 
@@ -238,6 +267,11 @@ const Learn = () => {
 
   const handleTopicSelect = (topic: Topic) => {
     setSelectedTopic(topic);
+    setSelectedSubtopic(topic.subtopics[0]);
+  };
+
+  const handleSubtopicSelect = (subtopic: Subtopic) => {
+    setSelectedSubtopic(subtopic);
   };
 
   const handleMarkTopicComplete = () => {
@@ -245,6 +279,24 @@ const Learn = () => {
       prevTopics.map(topic => 
         topic.id === selectedTopic.id 
           ? { ...topic, completed: true } 
+          : topic
+      )
+    );
+  };
+
+  // Mark subtopic as completed
+  const handleMarkSubtopicComplete = (subtopicId: string) => {
+    setTopics(prevTopics => 
+      prevTopics.map(topic => 
+        topic.id === selectedTopic.id 
+          ? {
+              ...topic,
+              subtopics: topic.subtopics.map(subtopic => 
+                subtopic.id === subtopicId 
+                  ? { ...subtopic, completed: true } 
+                  : subtopic
+              )
+            } 
           : topic
       )
     );
@@ -258,9 +310,11 @@ const Learn = () => {
         <Sidebar 
           topics={topics}
           selectedTopic={selectedTopic}
+          selectedSubtopic={selectedSubtopic}
           sidebarCollapsed={sidebarCollapsed}
           setSidebarCollapsed={setSidebarCollapsed}
           onTopicSelect={handleTopicSelect}
+          onSubtopicSelect={handleSubtopicSelect}
         />
 
         <div className="flex-1 p-6 overflow-y-auto">
@@ -272,9 +326,19 @@ const Learn = () => {
               <p className="text-neutral-600">
                 {selectedTopic.description}
               </p>
+              {selectedSubtopic && (
+                <div className="mt-4 p-2 bg-primary/5 inline-block rounded-md">
+                  <p className="text-sm text-primary font-medium">
+                    Current section: {selectedSubtopic.title}
+                  </p>
+                </div>
+              )}
             </div>
 
-            <VideoSection videoId={selectedTopic.videoId} />
+            <VideoSection 
+              videoId={selectedTopic.videoId} 
+              notes={selectedSubtopic?.notes}
+            />
 
             <div className="mt-8 flex justify-center gap-4">
               <Link to={`/story/${selectedTopic.id}`}>
@@ -285,6 +349,16 @@ const Learn = () => {
                   View Full Lesson
                 </Button>
               </Link>
+              
+              {selectedSubtopic && !selectedSubtopic.completed && (
+                <Button
+                  className="bg-green-500 hover:bg-green-600 text-white"
+                  onClick={() => handleMarkSubtopicComplete(selectedSubtopic.id)}
+                >
+                  <CheckCircle className="mr-2 h-4 w-4" />
+                  Mark as Read
+                </Button>
+              )}
             </div>
 
             <Separator className="my-8" />

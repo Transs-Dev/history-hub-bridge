@@ -2,12 +2,13 @@
 import { Card } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { ScrollArea } from '@/components/ui/scroll-area'
-import { ChevronLeft, ChevronRight, Play, CheckCircle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Play, CheckCircle, FileText } from 'lucide-react'
 
 export interface Subtopic {
   id: string;
   title: string;
   completed: boolean;
+  notes?: string;
 }
 
 export interface Topic {
@@ -23,17 +24,21 @@ export interface Topic {
 interface SidebarProps {
   topics: Topic[];
   selectedTopic: Topic;
+  selectedSubtopic?: Subtopic;
   sidebarCollapsed: boolean;
   setSidebarCollapsed: (collapsed: boolean) => void;
   onTopicSelect: (topic: Topic) => void;
+  onSubtopicSelect: (subtopic: Subtopic) => void;
 }
 
 const Sidebar = ({ 
   topics, 
   selectedTopic, 
+  selectedSubtopic,
   sidebarCollapsed, 
   setSidebarCollapsed, 
-  onTopicSelect 
+  onTopicSelect,
+  onSubtopicSelect
 }: SidebarProps) => {
   return (
     <div 
@@ -92,7 +97,10 @@ const Sidebar = ({
                     {topic.subtopics.map((subtopic) => (
                       <div 
                         key={subtopic.id} 
-                        className="p-2 text-sm flex items-center gap-2 rounded-md hover:bg-neutral-100 cursor-pointer"
+                        className={`p-2 text-sm flex items-center gap-2 rounded-md hover:bg-neutral-100 cursor-pointer ${
+                          selectedSubtopic?.id === subtopic.id ? 'bg-neutral-100' : ''
+                        }`}
+                        onClick={() => onSubtopicSelect(subtopic)}
                       >
                         {subtopic.completed ? (
                           <CheckCircle className="h-3 w-3 text-green-500" />
@@ -100,6 +108,7 @@ const Sidebar = ({
                           <div className="h-3 w-3 rounded-full border border-neutral-300" />
                         )}
                         <span className="flex-1">{subtopic.title}</span>
+                        {subtopic.notes && <FileText className="h-3 w-3 text-neutral-400" />}
                       </div>
                     ))}
                   </div>

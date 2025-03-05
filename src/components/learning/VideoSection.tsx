@@ -3,11 +3,12 @@ import { Card } from '@/components/ui/card'
 
 interface VideoSectionProps {
   videoId?: string;
+  notes?: string;
 }
 
-const VideoSection = ({ videoId }: VideoSectionProps) => {
+const VideoSection = ({ videoId, notes }: VideoSectionProps) => {
   return (
-    <div className="w-full">
+    <div className="w-full space-y-4">
       <Card className="aspect-video bg-neutral-900 overflow-hidden">
         {videoId ? (
           <iframe
@@ -23,6 +24,15 @@ const VideoSection = ({ videoId }: VideoSectionProps) => {
           </div>
         )}
       </Card>
+      
+      {notes && (
+        <Card className="p-4">
+          <h3 className="font-medium text-lg mb-2">Notes</h3>
+          <div className="text-neutral-700 text-sm whitespace-pre-line">
+            {notes}
+          </div>
+        </Card>
+      )}
     </div>
   )
 }
